@@ -26,7 +26,17 @@
                 <option value="mlp">MLP</option>
             </select>
             <br>
-            <!-- checkbox -->
+            <select name="iface" id="select" class="form-control" required>
+                <option value="" selected disabled hidden>Seleccione una interfaz de red</option>
+                {% for data in iface_names %}
+                    <option value="{{ data }}">{{ data }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="tiempo">Ingrese el tiempo de captura
+                <input type="number" min="60" max="3600" id="tiempo" name="tiempoCaptura" class="form-control">
+            </label>
+            <br>
             <div class="form-check form-check-inline">
                 <label>Sí
                     <input class="form-check" type="checkbox" name="trafico" id="normalizar" value="1">

@@ -1,82 +1,36 @@
 from flask import Flask, jsonify, request, render_template
-# from products import products
-import os
-
-#from interfaces import get_connection_name_from_guid
 import netifaces as ni
-#from getTraffic import captureTraffic
-
 from pprint import pprint
+from datetime import datetime
+import time
+import os
+import netifaces as ni
+from pprint import pprint
+import netifaces as ni
+import time
+
+
+
 
 app = Flask(__name__)
 
 #Render form in HTML
 @app.route('/')
 def template():
-    return render_template('form.html')
-
-# # Get all
-# @app.route('/products')
-# def getProducts():
-#     return jsonify({'products': products})
-
-# # Get one
-# @app.route('/products/<int:id>')
-# def getProduct(id):
-#     productsFound = [product for product in products if product['id'] == id]
-#     return productsFound
-
-# # Create
-# @app.route('/products', methods=['POST'])
-# def addProduct():
-#     new_product = {
-#         'id': request.json['id'],
-#         'name': request.json['name'],
-#         'price': request.json['price'],
-#         'quantity': request.json['quantity']
-#     }
-#     products.append(new_product)
-#     return jsonify({'message': "Gg", 'products': products})
-
-# # Update
-# @app.route('/productsEdit/<int:id>' , methods=['PUT'])
-# def editProduct(id):
-#     productFound = [product for product in products if product['id'] == id]
-#     productFound[0]['name'] = request.json['name']
-#     productFound[0]['price'] = request.json['price']
-#     productFound[0]['quantity'] = request.json['quantity']
-#     return jsonify({'message': "Product Updated", 'product': productFound[0]})
-
-# # Delete
-# @app.route('/productsDelete/<int:id>' , methods=['DELETE'])
-# def deleteProduct(id):
-#     productFound = [product for product in products if product['id'] == id]
-#     products.remove(productFound[0])
-#     return jsonify({'message': "Product Deleted", 'products': products})
+    iface_names=os.listdir('/sys/class/net/')
+    print(iface_names)
+    return render_template('form.html', iface_names=iface_names)
 
 @app.route('/subirPCAP')
 def pcap():
     return render_template('subirPcap.html')
 
-
-
 @app.route('/upload', methods=['POST'])
 def upload():
     pcap = request.files['pcap']
     pcap_name = pcap.filename
-    # call cicflowmeter with pcap variable
-    #os.system("cicflowmeter -f "+pcap_name+".pcap -c 2.csv")
     os.system('cicflowmeter -f ' + pcap_name + ' -c ' + pcap_name + '.csv')
-    
     return render_template('OK.html')
-
-
-    # pcap.save(os.path.join('/', pcap.filename))
-
-#     return render_template('mostrarPcap.html', pcap=pcap)
-#     # return jsonify({'message': "PCAP capturado: "}) 
-
-# # download_file
     
 
 
@@ -84,10 +38,17 @@ def upload():
 def algoritmo():
     algoritmo = request.form['algoritmo']
     trafico=request.form['trafico']
-    if(trafico=="1"):
-        a=os.system("sudo python getTraffic.py")
+    interface=request.form['iface']
+    tiempo=request.form['tiempoCaptura']
+    if(trafico=="1"):        
+        now = datetime.now()
+        params = "timeout 20 tcpdump -i eth0 -w" + now.strftime("%Y%m%d-%H%M%S") + ".pcap"
+        a=os.system(params)
+        nombre=now.strftime("%Y%m%d-%H%M%S")
+        a=os.system('sudo timeout '+tiempo+' tcpdump -i '+ interface +' -w '+nombre+'.pcap')
         os.system("sudo pkill -f getTraffic.py")
-        return jsonify({'message': "Tráfico capturado: "})
+        mensaje="Trama capturada"
+        return render_template('subirPcap.html', mensaje=mensaje)
     
 
 
