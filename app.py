@@ -1,12 +1,9 @@
 from flask import Flask, jsonify, request, render_template
-import netifaces as ni
 from pprint import pprint
 from datetime import datetime
 import time
 import os
-import netifaces as ni
 from pprint import pprint
-import netifaces as ni
 import time
 
 
