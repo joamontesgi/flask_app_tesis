@@ -8,54 +8,50 @@
 </head>
 <body>
     <header>
-        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-            <h1>Prototipo para Detección de Ataques de DDoS (Denegación de Servicios Distribuida) Basado en Aprendizaje de Máquina en una Arquitectura Orientada a Servicios en la Nube</h1>
-        </div>
+        <h4 class="text-center navbar-light bg-light">Prototipo para Detección de Ataques de DDoS (Denegación de Servicios Distribuida) Basado en Aprendizaje de Máquina en una Arquitectura Orientada a Servicios en la Nube</h4>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">Inicio</a>
+            <div class="collapse navbar-collapse" id="navbarText">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="subirPCAP">Conversión de trama a formato CSV</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="convertir">Analizar y obtener resultados</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
     </header>
     <div class="container text-center">
         <h5 class="mt-4">Convocatoria conjunta Universidad Nacional de Colombia - Universidad de Caldas</h5>
+        <h6><b>Paso 1: </b></h6>
+        <h6>{{mensaje}}</h6>
         <form action="/algoritmo" method="post" class="mt-4" enctype="multipart/form-data">
-            Técnicas de Clasificación 
-            <select name="algoritmo" id="select" class="form-control" required>
-                <option value="" selected disabled hidden>Seleccione un algoritmo</option>
-                <option value="knn">KNN</option>
-                <option value="svm">SVM</option>
-                <option value="dt">Árbol de decisión</option>
-                <option value="rf">Random Forest</option>
-                <option value="nb">Naive Bayes</option>
-                <option value="mlp">MLP</option>
-            </select>
-            <br>
-            <select name="iface" id="select" class="form-control" required>
-                <option value="" selected disabled hidden>Seleccione una interfaz de red</option>
-                {% for data in iface_names %}
-                    <option value="{{ data }}">{{ data }}</option>
-                {% endfor %}
-            </select>
-            <br>
-            <label for="tiempo">Ingrese el tiempo de captura
-                <input type="number" min="60" max="3600" id="tiempo" name="tiempoCaptura" class="form-control">
-            </label>
-            <br>
-            <div class="form-check form-check-inline">
-                <label>Sí
-                    <input class="form-check" type="checkbox" name="trafico" id="normalizar" value="1">
-                </label>
+            <label for="select">Por favor seleccione una interfaz de red</label>
+            <div class="col-xs-2">
+                    <select name="iface" id="select" class="form-control" required>
+                        <option value="" selected disabled hidden>Seleccione una interfaz de red</option>
+                        {% for data in iface_names %}
+                        <option value="{{ data }}">{{ data }}</option>
+                        {% endfor %}
+                    </select>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Enviar</button>
+            <label for="tiempo">Ingrese el tiempo de captura (segundos)
+                <input type="number" min="60" max="3600" id="tiempo" name="tiempoCaptura" class="form-control" required>
+            </label>
+            <br>
+            <button type="submit" class="btn btn-primary" name="trafico" id="normalizar" value="1">Iniciar captura</button>
         </form>
     </div>
 <footer class="text-center text-lg-start bg-light text-muted mt-4">
-    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-    <div class="me-5 d-none d-lg-block">
-    </div>
-    </section>
     <section class="">
         <div class="container text-center text-md-start mt-5">
             <div class="row mt-3">
                 <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                     <h6 class="text-uppercase fw-bold mb-4">
+                        <br>
                         <img src="static\unal.png" alt="" style="width: 80px; height: 100px;">
                     </h6>
                     <p>
@@ -68,6 +64,7 @@
             </div>
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                 <h6 class="text-uppercase fw-bold mb-4">
+                    <br>
                     <img src="static\uCaldas.png" alt="" style="width: 100px; height: 100px;">
                 </h6>
                 <p>

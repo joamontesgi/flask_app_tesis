@@ -24,19 +24,23 @@ def template():
 @app.route('/subirPCAP')
 def pcap():
     return render_template('subirPcap.html')
+    
+@app.route('/convertir')
+def mostrar():
+    return render_template('convertidoToCSV.html')
 
-@app.route('/upload', methods=['POST'])
+@app.route('/convertToCSV', methods=['POST'])
 def upload():
     pcap = request.files['pcap']
     pcap_name = pcap.filename
     os.system('cicflowmeter -f ' + pcap_name + ' -c ' + pcap_name + '.csv')
-    return render_template('OK.html')
+    mensaje="Se ha convertido correctamente a CSV"
+    return render_template('convertidoToCSV.html' ,mensaje=mensaje)
     
 
 
 @app.route('/algoritmo', methods=['POST'])
 def algoritmo():
-    algoritmo = request.form['algoritmo']
     trafico=request.form['trafico']
     interface=request.form['iface']
     tiempo=request.form['tiempoCaptura']
