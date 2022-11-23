@@ -28,21 +28,26 @@
         <h6><b>Paso 1: </b></h6>
         <h6>{{mensaje}}</h6>
         <form action="/algoritmo" method="post" class="mt-4" enctype="multipart/form-data">
-            <label for="select">Por favor seleccione una interfaz de red</label>
-            <div class="col-xs-2">
-                    <select name="iface" id="select" class="form-control" required>
-                        <option value="" selected disabled hidden>Seleccione una interfaz de red</option>
-                        {% for data in iface_names %}
-                        <option value="{{ data }}">{{ data }}</option>
-                        {% endfor %}
-                    </select>
-            </div>
-            <br>
-            <label for="tiempo">Ingrese el tiempo de captura (segundos)
-                <input type="number" min="60" max="3600" id="tiempo" name="tiempoCaptura" class="form-control" required>
+            <label for="demon">¿Desea capturar tramas indefinidamente y recibir notificaciones en caso de un ataque?
+                <br>
+                <input class="form-control" type="radio" id="demonSi" name="demon" value="1" required onchange="cambio()">Si
+                <input class="form-control" type="radio" id="demonNo" name="demon" value="0" required onchange="cambio()">No
             </label>
             <br>
-            <button type="submit" class="btn btn-primary" name="trafico" id="normalizar" value="1">Iniciar captura</button>
+            <div class="col-xs-2">
+
+                <select name="iface" id="select" class="form-control" required>
+                    <option value="" selected disabled hidden>Seleccione una interfaz de red</option>
+                    {% for data in iface_names %}
+                    <option value="{{ data }}">{{ data }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <div id="elementos">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary" id="normalizar" >Iniciar captura</button>
         </form>
     </div>
 <footer class="text-center text-lg-start bg-light text-muted mt-4">
@@ -80,3 +85,21 @@
 </footer>
 </body>
 </html>
+<script>
+    function cambio(){
+        let si = document.getElementById("demonSi");
+        let elementos = document.getElementById("elementos");
+        if(si.checked){
+            elementos.innerHTML="";
+        }else{
+            elementos.innerHTML=`
+            
+            <br>
+            <label for="tiempo">Ingrese el tiempo de captura (segundos)
+                <input type="number" min="10" max="3600" id="tiempo" name="tiempoCaptura" class="form-control" required>
+            </label>
+            </div>
+            `;
+        }
+    }
+</script>
