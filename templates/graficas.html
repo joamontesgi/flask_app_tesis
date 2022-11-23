@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <h2>Prueba</h2>
+    <h1>Actualmente hay {{benigno}} registros clasificados como benignos</h1>
+    <h1>Actualmente hay {{DDoS}} registros clasificados como DDoS</h1>
+    <h1>Actualmente hay {{DoSGoldenEye}} registros clasificados como DoSGoldenEye</h1>
+    <h1>Actualmente hay {{DoSHulk}} registros clasificados como DoSHulk</h1>
+    <h1>Actualmente hay {{DoSSlowhttptest}} registros clasificados como DoSSlowhttptest</h1>
+    <h1>Actualmente hay {{DoSSslowloris}} registros clasificados como DoSSslowloris</h1>
+
+
+
+    
+    <div id="myDiv">
+        
+    </div>
+    
+</body>
+
+<script>
+    var ataques = [3, 500, 15, 5]
+    var etiquetas = ['Benigno', 'DDoS', 'DoS', 'Hulk']
+    var data = [
+        {
+            x: etiquetas,
+            y: ataques,
+            type: 'bar'
+        }
+    ];
+    
+    Plotly.newPlot('myDiv', data);
+    
+</script>
+</html>

@@ -26,4 +26,13 @@ def redNeuronal(prueba):
   yy=le.inverse_transform(prediccion)
   yu=pd.DataFrame(yy)
   yu.rename({0: 'Total'}, axis=1,inplace=True)
-  return print('Registros :',yu.shape[0],' ',yu.groupby('Total').size()), print(yy[:400])
+  #BENIGN", "DDoS", "DoS GoldenEye","DoS Hulk","DoS Slowhttptest","DoS slowloris"
+  benigno=yu.groupby('Total').size()[0]
+  DDoS=yu.groupby('Total').size()[1]
+  DoSGoldenEye=yu.groupby('Total').size()[2]
+  DoSHulk=yu.groupby('Total').size()[3]
+  DoSSlowhttptest=yu.groupby('Total').size()[4]
+  DoSSslowloris=yu.groupby('Total').size()[5]
+
+  #return print('Registros :',yu.shape[0],' ',yu.groupby('Total').size()), print(yy[:400], benigno)
+  return benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris

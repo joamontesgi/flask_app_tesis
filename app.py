@@ -23,12 +23,9 @@ def modelos():
     csv = request.files['csv']
     model = request.form['model']
     if(model=="nn"):
-        from models import red_neuronal
-        redNeuronal(csv)
-
-
-    return "2"
-
+        from red_neuronal import redNeuronal
+        benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris=redNeuronal(csv)
+    return render_template('graficas.html', benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
 
 
 
@@ -51,6 +48,7 @@ def mostrar():
 def upload():
     pcap = request.files['pcap']
     pcap_name = pcap.filename
+
     os.system('cicflowmeter -f ' + pcap_name + ' -c ' + pcap_name + '.csv')
     mensaje="Se ha convertido correctamente a CSV"
     return render_template('convertidoToCSV.html' ,mensaje=mensaje)
