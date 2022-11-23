@@ -18,13 +18,17 @@ import time
 
 app = Flask(__name__)
 
-#@app.route('/demon', methods=['GET'])
-#def demonio():
-    #import demonio
-    # call to real.py
-    #pcap_name=real.captura()
-    #real.conversion(pcap_name)
-    #return jsonify({'message': 'ok'})
+@app.route('/modelo', methods=['POST'])
+def modelos():
+    csv = request.files['csv']
+    model = request.form['model']
+    if(model=="nn"):
+        from models import red_neuronal
+        redNeuronal(csv)
+
+
+    return "2"
+
 
 
 
@@ -76,7 +80,7 @@ def algoritmo():
             break
         from twilio.rest import Client
         sid = 'ACc9bb3ffdd2ba8d6d57e249462c42bc25'
-        auth_token='06c42c023d8699a7f93fa30d79d6832b'
+        auth_token='9fc534f2203ff2dbf485c097e99f2b3a'
         client = Client(sid, auth_token)
 
         client.messages.create(body='En este momento se presenta una sospecha de ataque',from_='+13466447534',to='+573042378114')
