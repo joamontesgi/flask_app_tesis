@@ -33,6 +33,5 @@ def redNeuronal(prueba):
   DoSHulk=yu.groupby('Total').size()[3]
   DoSSlowhttptest=yu.groupby('Total').size()[4]
   DoSSslowloris=yu.groupby('Total').size()[5]
-
-  #return print('Registros :',yu.shape[0],' ',yu.groupby('Total').size()), print(yy[:400], benigno)
+  #return print('Registros :',yu.shape[0],' ',yu.groupby('Total').size()), print(yy[:400])
   return benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris

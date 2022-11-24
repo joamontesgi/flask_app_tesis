@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, make_response
 import netifaces as ni
 from pprint import pprint
 from datetime import datetime
@@ -12,11 +12,35 @@ import random
 import datetime
 from datetime import datetime
 import time
-
+import pdfkit
 
 
 
 app = Flask(__name__)
+
+
+
+
+@app.route("/pdf",methods=['POST'])
+def index():
+    benigno=request.form['benigno']
+    DDoS=request.form['DDoS']
+    DoSGoldenEye=request.form['DoSGoldenEye']
+    DoSHulk=request.form['DoSHulk']
+    DoSSlowhttptest=request.form['DoSSlowhttptest']
+    DoSSslowloris=request.form['DoSSslowloris']
+    now = datetime.now()
+    nombre=now
+    html = render_template(
+        "certificate.html",
+        benigno=benigno, nombre=nombre,DDoS=DDoS, DoSGoldenEye=DoSGoldenEye,  DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
+    pdf = pdfkit.from_string(html, False)
+    response = make_response(pdf)
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+    return response
+ 
+
 
 @app.route('/modelo', methods=['POST'])
 def modelos():
@@ -25,7 +49,7 @@ def modelos():
     if(model=="nn"):
         from red_neuronal import redNeuronal
         benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris=redNeuronal(csv)
-    return render_template('graficas.html', benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
+        return render_template('graficas.html', benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
 
 
 
@@ -48,10 +72,10 @@ def mostrar():
 def upload():
     pcap = request.files['pcap']
     pcap_name = pcap.filename
-
     os.system('cicflowmeter -f ' + pcap_name + ' -c ' + pcap_name + '.csv')
     mensaje="Se ha convertido correctamente a CSV"
     return render_template('convertidoToCSV.html' ,mensaje=mensaje)
+    return "2"
 
 @app.route('/algoritmo', methods=['POST'])
 def algoritmo():
