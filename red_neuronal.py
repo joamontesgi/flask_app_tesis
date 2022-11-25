@@ -26,12 +26,16 @@ def redNeuronal(prueba):
   yy=le.inverse_transform(prediccion)
   yu=pd.DataFrame(yy)
   yu.rename({0: 'Total'}, axis=1,inplace=True)
-  #BENIGN", "DDoS", "DoS GoldenEye","DoS Hulk","DoS Slowhttptest","DoS slowloris"
-  benigno=yu.groupby('Total').size()[0]
-  DDoS=yu.groupby('Total').size()[1]
-  DoSGoldenEye=yu.groupby('Total').size()[2]
-  DoSHulk=yu.groupby('Total').size()[3]
-  DoSSlowhttptest=yu.groupby('Total').size()[4]
-  DoSSslowloris=yu.groupby('Total').size()[5]
-  #return print('Registros :',yu.shape[0],' ',yu.groupby('Total').size()), print(yy[:400])
-  return benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris
+  benignos=yu[yu['Total']=='BENIGN'].count()
+  ddos=yu[yu['Total']=='DDoS'].count()
+  goldeneye=yu[yu['Total']=='DoS GoldenEye'].count()
+  hulk=yu[yu['Total']=='DoS Hulk'].count()
+  slowhttptest=yu[yu['Total']=='DoS Slowhttptest'].count()
+  slowloris=yu[yu['Total']=='DoS slowloris'].count()
+  benignos=int(benignos)
+  slowloris=int(slowloris)
+  ddos=int(ddos)
+  goldeneye=int(goldeneye)
+  hulk=int(hulk)
+  slowhttptest=int(slowhttptest)
+  return benignos,ddos,goldeneye,hulk,slowhttptest,slowloris
