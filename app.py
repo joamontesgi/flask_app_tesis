@@ -97,7 +97,8 @@ def upload():
 def algoritmo():
     demon=request.form['demon']
     interface=request.form['iface']
-    if(demon=="0"):     
+    if(demon=="0"):   
+        import os
         tiempo=request.form['tiempoCaptura']
         now = datetime.now()
         nombre=now.strftime("%Y%m%d-%H%M%S")
@@ -110,22 +111,37 @@ def algoritmo():
         while(n):
             pcap_name=captura(interface)
             conversion(pcap_name)   
-            a=(random.randint(1,2))
-            if(a==1):
-                print("Hay un ataque")
-                #from os import remove
-                #remove(pcap_name + '.pcap')
-            break
-        from twilio.rest import Client
-        sid = 'ACc9bb3ffdd2ba8d6d57e249462c42bc25'
-        auth_token='9fc534f2203ff2dbf485c097e99f2b3a'
-        client = Client(sid, auth_token)
+            import os
+            import glob
+            def find_csv():
+                path = os.getcwd()
+                csv = glob.glob(path + "/*.csv")
+                for name in csv:
+                    return name
+            def find_pcap():
+                path = os.getcwd()
+                pcap = glob.glob(path + "/*.pcap")
+                for name in pcap:
+                    return name
+            csv=find_csv()
+            pcap_name=find_pcap()
+            from models.red_neuronal import redNeuronal
+            benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris=redNeuronal(csv)
+            if(benigno<DDoS or benigno<DoSGoldenEye or benigno<DoSHulk or benigno<DoSSlowhttptest or benigno<DoSSslowloris):
+                # from twilio.rest import Client
+                # sid = ''
+                # auth_token=''
+                # client = Client(sid, auth_token)
+                # client.messages.create(body='En este momento se presenta una sospecha de ataque',from_='+13466447534',to='+573042378114')
+                delete = os.remove(csv)
+                delete = os.remove(pcap_name)
+                return render_template('graficas.html', benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
+                break
+            else:
+                delete = os.remove(csv)
+                delete = os.remove(pcap_name)
 
-        client.messages.create(body='En este momento se presenta una sospecha de ataque',from_='+13466447534',to='+573042378114')
 
-
-        mensaje="F"
-        return render_template('ataque.html', mensaje=mensaje)
 
 
 if __name__ == '__main__':

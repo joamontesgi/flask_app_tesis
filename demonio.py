@@ -5,7 +5,7 @@ import random
 
 n=True
 def captura(interface):
-    tiempo="10"
+    tiempo="180"
     now = datetime.now()
     nombre=now.strftime("%Y%m%d-%H%M%S")
     a=os.system('sudo timeout '+tiempo+' tcpdump -i '+ interface +' -w '+nombre+'.pcap')
