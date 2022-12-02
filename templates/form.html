@@ -47,7 +47,7 @@
             <div id="elementos">
             </div>
             <br>
-            <button type="submit" class="btn btn-primary" id="normalizar" >Iniciar captura</button>
+            <button type="submit" class="btn btn-primary" id="normalizar">Iniciar captura</button>
         </form>
     </div>
 <footer class="text-center text-lg-start bg-light text-muted mt-4">
@@ -84,22 +84,5 @@
     </div>
 </footer>
 </body>
+<script src="static/manualAuto.js"></script>
 </html>
-<script>
-    function cambio(){
-        let si = document.getElementById("demonSi");
-        let elementos = document.getElementById("elementos");
-        if(si.checked){
-            elementos.innerHTML="";
-        }else{
-            elementos.innerHTML=`
-            
-            <br>
-            <label for="tiempo">Ingrese el tiempo de captura (segundos)
-                <input type="number" min="10" max="3600" id="tiempo" name="tiempoCaptura" class="form-control" required>
-            </label>
-            </div>
-            `;
-        }
-    }
-</script>
