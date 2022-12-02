@@ -61,37 +61,7 @@ def modelos():
         import sys
         import importlib
         import os
-        # os.system('python3.7.13 prueba.py')
-        # os.system('sudo python3.7.12 prueba.py')
-
-
-        os.system('pyenv shell 3.7.13')
-        # print("Prueba de SYstem")
-        # os.system('date')
-
-
-        # # os.execl(sys.executable, sys.executable, *sys.argv)
-
-        # # print("HOla")
-        # print("La vesi`on de Python es"d)
-        # # os.system('pyenv global 3.8.5')
-        # os.system('pyenv global 3.7.13')
-        # os.system('python --version')
-        # # import sys
-        # # import importlib
-        # # import os
-        # # import signal
-        # # os.kill(os.getppid(), signal.SIGHUP)
-        # # print("")
-        print("La vesi`on de Python es"+ sys.version)
-
-        # os.system('pip install faiss_knn')
-        # os.system('pip install faiss-cpu')
-        # os.system('pip install dill')
-        # from models.KNN_TPU import KNN
-        # benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris=KNN(csv)
-        # os.system('pyenv local system')
-        # return render_template('graficas.html', benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
+        # change version python 3.7
         return "a"
 
 
