@@ -61,12 +61,24 @@ def modelos():
         import sys
         import importlib
         import os
-        # change version python 3.7
-        return "a"
+        import dill
+        os.system('pyenv local 3.7.13')
+        os.system('python knn.py')
+        from knn import KNN
+        benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris=KNN(csv)
+        return render_template('graficas.html', benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris),os.system('pyenv local 3.8.5')
+        # version python 3.7.13
+        #return "a"
 
 
 @app.route('/')
 def template():
+    iface_names=os.listdir('/sys/class/net/')
+    print(iface_names)
+    return render_template('home.html', iface_names=iface_names)
+
+@app.route('/form')
+def form():
     iface_names=os.listdir('/sys/class/net/')
     print(iface_names)
     return render_template('form.html', iface_names=iface_names)

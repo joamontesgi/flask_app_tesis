@@ -1,30 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    <title>Document</title>
-    <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
-</head>
-    <header>
-        <h4 class="text-center navbar-light bg-light">Prototipo para Detección de Ataques de DDoS (Denegación de Servicios Distribuida) Basado en Aprendizaje de Máquina en una Arquitectura Orientada a Servicios en la Nube</h4>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/">Inicio</a>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="subirPCAP">Conversión de trama a formato CSV</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="convertir">Analizar y obtener resultados</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-    <body onload="graficas()">
-      <div class="container text-center">
+{% extends 'masterpage.html' %}  
+{% block contenido %} 
+
         <h1 class="mt-4">Dashboard</h1>
         <form action="/pdf" method="post">
             <input value="{{benigno}}" hidden name="benigno">
@@ -56,41 +32,8 @@
                 </div>
               </div>
     </div>
+    {% endblock %}
+<script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
     <script src="static\grafica.js"></script>
-    <footer class="text-center text-lg-start bg-light text-muted mt-4">
-        <section class="">
-            <div class="container text-center text-md-start mt-5">
-                <div class="row mt-3">
-                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                        <h6 class="text-uppercase fw-bold mb-4">
-                            <br>
-                            <img src="static\unal.png" alt="" style="width: 80px; height: 100px;">
-                        </h6>
-                        <p>
-                        Universidad Nacional de Colombia
-                        </p>
-                    </div>
-                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                </div>
-                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                </div>
-                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-4">
-                        <br>
-                        <img src="static\uCaldas.png" alt="" style="width: 100px; height: 100px;">
-                    </h6>
-                    <p>
-                    Universidad de Caldas
-                    </p>
-            </div>
-        </div>
-        </section>
-        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        © 2022 Derechos reservados:
-        <a class="text-reset fw-bold" href="https://mdbootstrap.com/">Template desarrollador por: MDBootstrap.com</a>
-        </div>
-    </footer>
-</body>
-
-
-</html>
+    <script>graficas()</script>
+    
