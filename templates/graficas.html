@@ -20,8 +20,10 @@
                 <h5><span id="DoSSlowhttptest"><strong>{{DoSSlowhttptest}}</strong></span> registros clasificados como: DoSSlowhttptest</h5>
                 <h5><span id="DoSSslowloris"><strong>{{DoSSslowloris}}</strong></span> registros clasificados como: DoSSslowloris</h5>        </div>
             </div>
-
-            <div class="container">
+            <script src="../static/grafica.js"></script>
+            <body onload="graficas()">
+              
+            <div class="container" >
                 <div class="row">
                   <div class="col-sm">
                     <div id="barra"></div>
@@ -31,9 +33,8 @@
                 </div>
                 </div>
               </div>
-    </div>
-    {% endblock %}
-<script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
-    <script src="static\grafica.js"></script>
-    <script>graficas()</script>
+            </body>
+
+              <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+              {% endblock %}
     
