@@ -1,28 +1,32 @@
 {% extends 'masterpage.html' %}  
 {% block contenido %} 
-        <h6><b>Paso 1: </b></h6>
-        <h6>{{mensaje}}</h6>
+        <h6 class="mt-4"><b>Paso 1: </b></h6>
+        <div class="w-50 p-3 container text-center" >
         <form action="/algoritmo" method="post" class="mt-4" enctype="multipart/form-data">
-            <label for="demon">¿Desea capturar tramas indefinidamente y recibir notificaciones en caso de un ataque?
-                <br>
-                <input class="form-control" type="radio" id="demonSi" name="demon" value="1" required onchange="cambio()">Si
-                <input class="form-control" type="radio" id="demonNo" name="demon" value="0" required onchange="cambio()">No
-            </label>
             <br>
-            <div class="col-xs-2">
-
-                <select name="iface" id="select" class="form-control" required>
+            <h6>¿Desea capturar tramas indefinidamente y recibir notificaciones en caso de un ataque?</h6>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="demon" id="demonSi" value="1" required onchange="cambio()">
+                <label class="form-check-label" for="demonSi">
+                    Si
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="demon" id="demonNo" value="0" required onchange="cambio()">
+                <label class="form-check-label" for="demonNo">
+                  No
+                </label>
+                <div id="elementos">
+                </div>
+              </div>
+                <select name="iface" id="select" class="form-control" class="text-center" required>
                     <option value="" selected disabled hidden>Seleccione una interfaz de red</option>
                     {% for data in iface_names %}
                     <option value="{{ data }}">{{ data }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <br>
-            <div id="elementos">
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary" id="normalizar">Iniciar captura</button>
+            <script src="../static/manualAuto.js"></script>
+            <button type="submit" class="btn btn-success" id="normalizar">Iniciar captura</button>
         </form>
-        <script src="../static/manualAuto.js"></script>
         {% endblock %}

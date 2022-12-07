@@ -1,17 +1,16 @@
 {% extends 'masterpage.html' %}  
 {% block contenido %} 
-
-    <h6><b>Paso 2: </b></h6>
+    <h6 class="mt-4"><b>Paso 2: </b></h6>
     <h6>{{mensaje}}</h6>
-    <br>
+    <div class="w-50 p-3 container text-center" >
     <form action="/convertToCSV" method="POST" enctype="multipart/form-data">
         <label for="archivo">Seleccione el archivo .PCAP</label>
         <br>
-        <input type="file" name="pcap" id="archivo" required accept=".pcap, .PCAP">
+        <input class="form-control" type="file" name="pcap" id="archivo" required accept=".pcap, .PCAP">
         <br>
-        <br>
-
-        <button type="submit" value="Upload" class="btn btn-primary"> Cargar archivo</button>
+        <button type="submit" value="Upload" class="btn btn-success"> Cargar archivo</button>
     </form>
+    </div>
+    
 
     {% endblock %}

@@ -13,12 +13,7 @@ from datetime import datetime
 import time
 import pdfkit
 
-
-
 app = Flask(__name__)
-
-
-
 
 @app.route("/pdf",methods=['POST'])
 def index():
@@ -67,8 +62,7 @@ def modelos():
         from knn import KNN
         benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris=KNN(csv)
         return render_template('graficas.html', benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris),os.system('pyenv local 3.8.5')
-        # version python 3.7.13
-        #return "a"
+  
 
 
 @app.route('/')
@@ -96,7 +90,6 @@ def upload():
     pcap = request.files['pcap']
     pcap_name = pcap.filename
     os.system('cicflowmeter -f ' + pcap_name + ' -c ' + pcap_name + '.csv')
-    # os.system('mv '+pcap_name+' '+'captures')
     mensaje="Se ha convertido correctamente a CSV"
     return render_template('convertidoToCSV.html' ,mensaje=mensaje)
 

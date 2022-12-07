@@ -5,12 +5,10 @@
             elementos.innerHTML="";
         }else{
             elementos.innerHTML=`
-            
-            <br>
             <label for="tiempo">Ingrese el tiempo de captura (segundos)
                 <input type="number" min="10" max="3600" id="tiempo" name="tiempoCaptura" class="form-control" required>
             </label>
-            </div>
+            
             `;
         }
     }

@@ -1,10 +1,11 @@
 function graficas(){    
-    let benigno = document.getElementById("benigno").innerText;
-    let DDoS = document.getElementById("DDoS").innerText;
-    let DoSGoldenEye = document.getElementById("DoSGoldenEye").innerText;
-    let DoSHulk = document.getElementById("DoSHulk").innerText;
-    let DoSSlowhttptest = document.getElementById("DoSSlowhttptest").innerText;
-    let DoSSslowloris = document.getElementById("DoSSslowloris").innerText;
+    let benigno = document.querySelector("#benigno").innerText;
+    let DDoS = document.querySelector("#DDoS").innerText;
+    let DoSGoldenEye = document.querySelector("#DoSGoldenEye").innerText;
+    let DoSHulk = document.querySelector("#DoSHulk").innerText;
+    let DoSSlowhttptest = document.querySelector("#DoSSlowhttptest").innerText;
+    let DoSSslowloris = document.querySelector("#DoSSslowloris").innerText;
+    
     benigno = parseInt(benigno);
     DDoS = parseInt(DDoS);
     DoSGoldenEye = parseInt(DoSGoldenEye);
@@ -31,9 +32,6 @@ function graficas(){
       };
       
     Plotly.newPlot('barra', data, layout);
-
-
-
 
     var data = [{
         values: ataques,

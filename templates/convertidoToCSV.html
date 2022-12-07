@@ -1,7 +1,8 @@
 {% extends 'masterpage.html' %}  
 {% block contenido %}  
-        <h6><b>Paso 3: </b></h6>
+        <h6 class="mt-4"><b>Paso 3: </b></h6>
         <h6>{{mensaje}}</h6>
+        <div class="w-50 p-3 container text-center" >
         <form action="/modelo" method="post" class="mt-4" enctype="multipart/form-data">
             <label for="select">Por favor seleccione una de las Técnicas de Clasificación</label>
             <select name="model" id="select" class="form-control" required>
@@ -11,10 +12,11 @@
                 <option value="nn">Red Neuronal Profunda</option>
                 <option value="cnn">Red Neuronal Convolucional</option>
             </select>
-            <br>
-            <label for="archivo">Seleccione un archivo CSV</label>
-            <input type="file" name="csv" id="archivo" accept=".csv, .CSV" required>
-            <br>
-            <button type="submit" class="btn btn-primary" name="trafico" id="normalizar" value="1">Obtener resultados (dashboard)</button>
+            <div class="mb-3 mt-4">
+                <label for="archivo" class="form-label">Seleccione un archivo CSV</label>
+                <input class="form-control" type="file" name="csv" id="archivo" accept=".csv, .CSV" required>
+            </div>
+            <button type="submit" class="btn btn-success" name="trafico" id="normalizar" value="1">Obtener resultados (dashboard)</button>
         </form>
+        </div>
         {% endblock %}
