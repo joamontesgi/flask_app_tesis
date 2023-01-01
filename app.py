@@ -25,9 +25,7 @@ def index():
     DoSSslowloris=request.form['DoSSslowloris']
     now = datetime.now()
     nombre=now
-    html = render_template(
-        "certificate.html",
-        benigno=benigno, nombre=nombre,DDoS=DDoS, DoSGoldenEye=DoSGoldenEye,  DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
+    html = render_template("certificate.html",benigno=benigno, nombre=nombre,DDoS=DDoS, DoSGoldenEye=DoSGoldenEye,  DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
     pdf = pdfkit.from_string(html, False)
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
@@ -61,8 +59,10 @@ def modelos():
         os.system('python knn.py')
         from knn import KNN
         benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris=KNN(csv)
+        #KNN(csv)
+        #return render_template('graficas.html')
         return render_template('graficas.html', benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris),os.system('pyenv local 3.8.5')
-  
+ 
 
 
 @app.route('/')
@@ -101,12 +101,21 @@ def algoritmo():
     if(demon=="0"):   
         import os
         tiempo=request.form['tiempoCaptura']
+        tiempo=int(tiempo)
+        tiempo = tiempo * (60/1)
+        print(type(tiempo))
+        tiempo=str(tiempo)
         now = datetime.now()
         nombre=now.strftime("%Y%m%d-%H%M%S")
         os.system('sudo timeout '+tiempo+' tcpdump -i '+ interface +' -w '+nombre+'.pcap')
         mensaje="Trama capturada"
         return render_template('subirPcap.html', mensaje=mensaje)
     else:
+        sid = request.form['sid']
+        token = request.form['token']
+        numero_cel = request.form['numero_cel']
+        twi = request.form['twi']
+        mensaje = request.form['mensaje']
         from automatico import captura, conversion
         n=True
         while(n):
@@ -116,11 +125,11 @@ def algoritmo():
             import os
             csv=find_csv()
             pcap_name=find_pcap()
-            from models.red_neuronal import redNeuronal
-            benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris=redNeuronal(csv)
+            from models.red_neuronal_conv import redNeuronalconvolucional
+            benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris=redNeuronalconvolucional(csv)
             if(benigno<DDoS or benigno<DoSGoldenEye or benigno<DoSHulk or benigno<DoSSlowhttptest or benigno<DoSSslowloris):
                 from alerta import enviarMensaje
-                enviarMensaje()
+                enviarMensaje(sid, token, mensaje, numero_cel, twi)
                 os.system(' mv '+pcap_name+' '+'captures')
                 os.system(' mv '+csv+' '+'captures')
                 return render_template('graficas.html', benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)

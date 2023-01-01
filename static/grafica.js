@@ -48,4 +48,35 @@ function graficas(){
       
       Plotly.newPlot('pie', data, layout);
       
+      var trace1 = {
+        x: etiquetas,
+        y: ataques,
+        type: 'scatter'
+      };
+      var layout = {
+        title: "Comportamiento de la trama"
+      };
+      
+      var data = [trace1];
+      Plotly.newPlot('myDiv', data, layout);
+      
+      var trace1 = {
+        x: etiquetas,
+        y: ataques,
+        mode: 'markers',
+        marker: {
+          size: [40, 40, 40, 40, 40, 40]
+        }
+      };
+      
+      var data = [trace1];
+      
+      var layout = {
+        title: "Comportamiento de la trama",
+        showlegend: false
+      };
+      
+      Plotly.newPlot('myDiv2', data, layout);
+      
+      
 }

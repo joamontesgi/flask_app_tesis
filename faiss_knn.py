@@ -1,13 +1,15 @@
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Tue Feb  5 15:27:35 2019
-
 @author: shankarpm
 """
 import numpy as np 
 #from collections import Counter
 from scipy import stats
+from faiss import *
+import faiss
 
 class FaissKNNImpl:
     
@@ -39,7 +41,7 @@ class FaissKNNImpl:
         self.test_label_faiss_output = stats.mode(self.train_labels[test_features_faiss_Index],axis=1)[0]
         self.test_label_faiss_output = np.array(self.test_label_faiss_output.ravel())
         #for test_index in range(0,test_features.shape[0]):
-        #    self.test_label_faiss_output[test_index] = stats.mode(self.train_labels[test_features_faiss_Index[test_index]])[0][0] #Counter(self.train_labels[test_features_faiss_Index[test_index]]).most_common(1)[0][0] 
+            #self.test_label_faiss_output[test_index] = stats.mode(self.train_labels[test_features_faiss_Index[test_index]])[0][0] #Counter(self.train_labels[test_features_faiss_Index[test_index]]).most_common(1)[0][0] 
         return self.test_label_faiss_output
     
     def predict_GPU(self,test_features): 

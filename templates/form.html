@@ -4,11 +4,11 @@
         <div class="w-50 p-3 container text-center" >
         <form action="/algoritmo" method="post" class="mt-4" enctype="multipart/form-data">
             <br>
-            <h6>¿Desea capturar tramas indefinidamente y recibir notificaciones en caso de un ataque?</h6>
+            <h6>¿Desea iniciar bajo el enfoque automático?</h6>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="demon" id="demonSi" value="1" required onchange="cambio()">
                 <label class="form-check-label" for="demonSi">
-                    Si
+                    Sí
                 </label>
               </div>
               <div class="form-check">
@@ -29,4 +29,5 @@
             <script src="../static/manualAuto.js"></script>
             <button type="submit" class="btn btn-success" id="normalizar">Iniciar captura</button>
         </form>
+ 
         {% endblock %}

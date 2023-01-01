@@ -1,11 +1,29 @@
 {% extends 'masterpage.html' %}  
 {% block contenido %}  
   <h3>Reporte</h3>
-    <p><b>Fecha y hora: </b>{{nombre}}</p>
-     <h5 >{{benigno}} registros clasificados como: Benignos</h5>
-     <h5 >{{DDoS}} registros clasificados como: DDoS</h5>
-     <h5 >{{DoSGoldenEye}} registros clasificados como: DoSGoldenEyes</h5>
-     <h5 >{{DoSHulk}} registros clasificados como: DoSHulk</h5>
-     <h5 >{{DoSSlowhttptest}} registros clasificados como: DoSSlowhttptest</h5>
-     <h5 >{{DoSSslowloris}} registros clasificados como: DoSSslowloris</h5>
+  <p><b>Fecha y hora: </b>{{nombre}}</p>
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Benignos</th>
+          <th scope="col">DDoS</th>
+          <th scope="col">DoSGoldenEye</th>
+          <th scope="col">DoSHulk</th>
+          <th scope="col">DoSSlowhttptest</th>
+          <th scope="col">DoSSslowloris</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{benigno}}</td>
+          <td>{{DDoS}}</td>
+          <td>{{DoSGoldenEye}}</td>
+          <td>{{DoSHulk}}</td>
+          <td>{{DoSSlowhttptest}}</td>
+          <td>{{DoSSslowloris}}</td>
+        </tr>
+      </tbody>
+    </table>
+
 {% endblock %}
