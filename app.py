@@ -12,6 +12,8 @@ import datetime
 from datetime import datetime
 import time
 import pdfkit
+import os
+
 
 app = Flask(__name__)
 
@@ -26,7 +28,7 @@ def index():
     now = datetime.now()
     nombre=now
     html = render_template("certificate.html",benigno=benigno, nombre=nombre,DDoS=DDoS, DoSGoldenEye=DoSGoldenEye,  DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
-    pdf = pdfkit.from_string(html, False)
+    pdf = pdfkit.from_string(html, options={"enable-local-file-access": ""})
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
     response.headers["Content-Disposition"] = "inline; filename=output.pdf"
