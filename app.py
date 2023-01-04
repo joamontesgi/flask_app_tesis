@@ -25,9 +25,11 @@ def index():
     DoSHulk=request.form['DoSHulk']
     DoSSlowhttptest=request.form['DoSSlowhttptest']
     DoSSslowloris=request.form['DoSSslowloris']
+    tiempo=request.form['tiempo']
+    fecha=request.form['fecha']
     now = datetime.now()
     nombre=now
-    html = render_template("certificate.html",benigno=benigno, nombre=nombre,DDoS=DDoS, DoSGoldenEye=DoSGoldenEye,  DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
+    html = render_template("certificate.html",tiempo=tiempo, fecha=fecha, benigno=benigno, nombre=nombre,DDoS=DDoS, DoSGoldenEye=DoSGoldenEye,  DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
     pdf = pdfkit.from_string(html, options={"enable-local-file-access": ""})
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
@@ -120,6 +122,8 @@ def algoritmo():
         mensaje = request.form['mensaje']
         from automatico import captura, conversion
         n=True
+        hora_inicio = datetime.datetime.now()
+        fecha = hora_inicio.strftime("%Y-%m-%d")
         while(n):
             pcap_name=captura(interface)
             conversion(pcap_name)
@@ -134,7 +138,9 @@ def algoritmo():
                 enviarMensaje(sid, token, mensaje, numero_cel, twi)
                 os.system(' mv '+pcap_name+' '+'captures')
                 os.system(' mv '+csv+' '+'captures')
-                return render_template('graficas.html', benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris)
+                hora_fin = datetime.datetime.now()
+                tiempo = hora_fin - hora_inicio
+                return render_template('graficas.html', fecha=fecha, benigno=benigno, DDoS=DDoS,  DoSGoldenEye=DoSGoldenEye, DoSHulk=DoSHulk, DoSSlowhttptest=DoSSlowhttptest, DoSSslowloris=DoSSslowloris, tiempo=tiempo)
                 break
             else:
                 os.system(' mv '+pcap_name+' '+'captures')

@@ -9,6 +9,8 @@
             <input value="{{DoSHulk}}" hidden name="DoSHulk">
             <input value="{{DoSSlowhttptest}}" hidden name="DoSSlowhttptest">
             <input value="{{DoSSslowloris}}" hidden name="DoSSslowloris">
+            <input value="{{tiempo}}" hidden name="tiempo">
+            <input value="{{fecha}}" hidden name="fecha">
             <button type="submit" class="btn btn-success">Generar PDF</button>
         </form>
         <div class="card mt-4">
@@ -18,7 +20,10 @@
                 <h5><span id="DoSGoldenEye"><strong>{{DoSGoldenEye}}</strong></span> registros clasificados como: DoSGoldenEye</h5>
                 <h5><span id="DoSHulk"><strong>{{DoSHulk}}</strong></span> registros clasificados como: DoSHulk</h5>
                 <h5><span id="DoSSlowhttptest"><strong>{{DoSSlowhttptest}}</strong></span> registros clasificados como: DoSSlowhttptest</h5>
-                <h5><span id="DoSSslowloris"><strong>{{DoSSslowloris}}</strong></span> registros clasificados como: DoSSslowloris</h5>        </div>
+                <h5><span id="DoSSslowloris"><strong>{{DoSSslowloris}}</strong></span> registros clasificados como: DoSSslowloris</h5>
+                <h5><span id="tiempo"><strong>{{tiempo}}</strong></span> Tiempo de duración del análisis de tráfico</h5>
+                <h5><span id="fecha"><strong>{{fecha}}</strong></span> Fecha de la prueba</h5>
+              </div>
             </div>
             <script src="../static/grafica.js"></script>
             <body onload="graficas()">
@@ -41,7 +46,9 @@
                   </div> 
                 </div>
             </div>
-<div id="gg"></div>
+            <div id="gg">
+              
+            </div>
             </body>
 
               <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
