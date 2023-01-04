@@ -104,11 +104,16 @@ def algoritmo():
     interface=request.form['iface']
     if(demon=="0"):   
         import os
+        import datetime
         tiempo=request.form['tiempoCaptura']
         tiempo=int(tiempo)
         tiempo = tiempo * (60/1)
         print(type(tiempo))
         tiempo=str(tiempo)
+        import datetime
+        import time
+        import datetime
+        from datetime import datetime
         now = datetime.now()
         nombre=now.strftime("%Y%m%d-%H%M%S")
         os.system('sudo timeout '+tiempo+' tcpdump -i '+ interface +' -w '+nombre+'.pcap')
@@ -122,7 +127,9 @@ def algoritmo():
         mensaje = request.form['mensaje']
         from automatico import captura, conversion
         n=True
+        import datetime
         hora_inicio = datetime.datetime.now()
+        print(hora_inicio)
         fecha = hora_inicio.strftime("%Y-%m-%d")
         while(n):
             pcap_name=captura(interface)
@@ -133,7 +140,7 @@ def algoritmo():
             pcap_name=find_pcap()
             from models.red_neuronal_conv import redNeuronalconvolucional
             benigno, DDoS,  DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris=redNeuronalconvolucional(csv)
-            if(benigno<DDoS or benigno<DoSGoldenEye or benigno<DoSHulk or benigno<DoSSlowhttptest or benigno<DoSSslowloris):
+            if(DDoS>0 or DoSGoldenEye>0 or DoSHulk>0 or DoSSlowhttptest>0 or DoSSslowloris>0):
                 from alerta import enviarMensaje
                 enviarMensaje(sid, token, mensaje, numero_cel, twi)
                 os.system(' mv '+pcap_name+' '+'captures')
