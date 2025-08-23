@@ -1,0 +1,14 @@
+{% extends 'masterpage.html' %}  
+{% block contenido %}  
+        <h6 class="mt-4"><b>Paso 3: </b></h6>
+        <h6>{{mensaje}}</h6>
+        <div class="w-50 p-3 container text-center" >
+        <form action="/models" method="post" class="mt-4" enctype="multipart/form-data">
+            <div class="mb-3 mt-4">
+                <label for="archivo" class="form-label">Seleccione un archivo CSV</label>
+                <input class="form-control" type="file" name="csv" id="archivo" accept=".csv, .CSV" required>
+            </div>
+            <button type="submit" class="btn btn-success" name="trafico" id="normalizar" value="1">Obtener resultados (dashboard)</button>
+        </form>
+        </div>
+        {% endblock %}

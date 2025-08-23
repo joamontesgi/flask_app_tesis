@@ -1,82 +1,29 @@
-function graficas(){    
-    let benigno = document.querySelector("#benigno").innerText;
-    let DDoS = document.querySelector("#DDoS").innerText;
-    let DoSGoldenEye = document.querySelector("#DoSGoldenEye").innerText;
-    let DoSHulk = document.querySelector("#DoSHulk").innerText;
-    let DoSSlowhttptest = document.querySelector("#DoSSlowhttptest").innerText;
-    let DoSSslowloris = document.querySelector("#DoSSslowloris").innerText;
-    
-    benigno = parseInt(benigno);
-    DDoS = parseInt(DDoS);
-    DoSGoldenEye = parseInt(DoSGoldenEye);
-    DoSHulk = parseInt(DoSHulk);
-    DoSSlowhttptest = parseInt(DoSSlowhttptest);
-    DoSSslowloris = parseInt(DoSSslowloris);
+function charts(){    
 
+    // ---- CNN ----
+    let benigno_cnn = parseInt(document.querySelector("#benigno_cnn").innerText);
+    let DDoS_cnn = parseInt(document.querySelector("#DDoS_cnn").innerText);
+    let DoSGoldenEye_cnn = parseInt(document.querySelector("#DoSGoldenEye_cnn").innerText);
+    let DoSHulk_cnn = parseInt(document.querySelector("#DoSHulk_cnn").innerText);
+    let DoSSlowhttptest_cnn = parseInt(document.querySelector("#DoSSlowhttptest_cnn").innerText);
+    let DoSSslowloris_cnn = parseInt(document.querySelector("#DoSSslowloris_cnn").innerText);
 
+    let ataques_cnn = [benigno_cnn, DDoS_cnn, DoSGoldenEye_cnn, DoSHulk_cnn, DoSSlowhttptest_cnn, DoSSslowloris_cnn];
+    let etiquetas = ['Benigno', 'DDoS', 'DoSGoldenEye', 'DoSHulk', 'DoSSlowhttptest', 'DoSSslowloris'];
 
-    var ataques = [ benigno, DDoS, DoSGoldenEye, DoSHulk, DoSSlowhttptest, DoSSslowloris]
-    var etiquetas = ['Benigno', 'DDoS', 'DoSGoldenEye', 'DoSHulk', 'DoSSlowhttptest', 'DoSSslowloris']
-    var data = [
-        {
-            x: etiquetas,
-            y: ataques,
-            type: 'bar',
-            text: ataques.map(String),
-        }
-    ];
-    var layout = {
-        height: 500,
-        width: 500, 
-        title: "Comportamiento de la trama"
-      };
-      
-    Plotly.newPlot('barra', data, layout);
+    Plotly.newPlot('barra_cnn', [{x: etiquetas, y: ataques_cnn, type: 'bar'}], {title:"CNN - Barras"});
+    Plotly.newPlot('pie_cnn', [{values: ataques_cnn, labels: etiquetas, type: 'pie'}], {title:"CNN - Pie"});
 
-    var data = [{
-        values: ataques,
-        labels: ['Benigno', 'DDoS', 'DoSGoldenEye', 'DoSHulk', 'DoSSlowhttptest', 'DoSSslowloris'],
-        type: 'pie'
-      }];
-      
-      var layout = {
-        height: 500,
-        width: 500,
-        title: "Comportamiento de la trama"
+    // ---- DNN ----
+    let benigno_dnn = parseInt(document.querySelector("#benigno_dnn").innerText);
+    let DDoS_dnn = parseInt(document.querySelector("#DDoS_dnn").innerText);
+    let DoSGoldenEye_dnn = parseInt(document.querySelector("#DoSGoldenEye_dnn").innerText);
+    let DoSHulk_dnn = parseInt(document.querySelector("#DoSHulk_dnn").innerText);
+    let DoSSlowhttptest_dnn = parseInt(document.querySelector("#DoSSlowhttptest_dnn").innerText);
+    let DoSSslowloris_dnn = parseInt(document.querySelector("#DoSSslowloris_dnn").innerText);
 
-      };
-      
-      Plotly.newPlot('pie', data, layout);
-      
-      var trace1 = {
-        x: etiquetas,
-        y: ataques,
-        type: 'scatter'
-      };
-      var layout = {
-        title: "Comportamiento de la trama"
-      };
-      
-      var data = [trace1];
-      Plotly.newPlot('myDiv', data, layout);
-      
-      var trace1 = {
-        x: etiquetas,
-        y: ataques,
-        mode: 'markers',
-        marker: {
-          size: [40, 40, 40, 40, 40, 40]
-        }
-      };
-      
-      var data = [trace1];
-      
-      var layout = {
-        title: "Comportamiento de la trama",
-        showlegend: false
-      };
-      
-      Plotly.newPlot('myDiv2', data, layout);
-      
-      
+    let ataques_dnn = [benigno_dnn, DDoS_dnn, DoSGoldenEye_dnn, DoSHulk_dnn, DoSSlowhttptest_dnn, DoSSslowloris_dnn];
+
+    Plotly.newPlot('barra_dnn', [{x: etiquetas, y: ataques_dnn, type: 'bar'}], {title:"DNN - Barras"});
+    Plotly.newPlot('pie_dnn', [{values: ataques_dnn, labels: etiquetas, type: 'pie'}], {title:"DNN - Pie"});
 }

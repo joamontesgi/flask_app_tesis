@@ -23,7 +23,7 @@
         }else{
             elementos.innerHTML=`
             <label for="tiempo">Ingrese el tiempo de captura (minutos)
-                <input type="number" min="1" max="60" id="tiempo" name="tiempoCaptura" class="form-control" required placeholder="Mínimo 1 - Máximo 60">
+                <input type="number" min="1" max="60" id="tiempo" name="capture_time" class="form-control" required placeholder="Mínimo 1 - Máximo 60">
             </label>
             
             `;

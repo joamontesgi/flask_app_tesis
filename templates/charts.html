@@ -1,0 +1,56 @@
+{% extends 'masterpage.html' %}
+{% block contenido %} 
+
+<h1 class="mt-4">Dashboard</h1>
+
+<!-- Resultados CNN -->
+<div class="card mt-4">
+  <div class="card-body">
+    <h3>Resultados CNN</h3>
+    <h5><span id="benigno_cnn"><strong>{{benigno_cnn}}</strong></span> registros: benignos</h5>
+    <h5><span id="DDoS_cnn"><strong>{{DDoS_cnn}}</strong></span> registros: DDoS</h5>
+    <h5><span id="DoSGoldenEye_cnn"><strong>{{DoSGoldenEye_cnn}}</strong></span> registros: DoSGoldenEye</h5>
+    <h5><span id="DoSHulk_cnn"><strong>{{DoSHulk_cnn}}</strong></span> registros: DoSHulk</h5>
+    <h5><span id="DoSSlowhttptest_cnn"><strong>{{DoSSlowhttptest_cnn}}</strong></span> registros: DoSSlowhttptest</h5>
+    <h5><span id="DoSSslowloris_cnn"><strong>{{DoSSslowloris_cnn}}</strong></span> registros: DoSSslowloris</h5>
+  </div>
+</div>
+
+<!-- Resultados DNN -->
+<div class="card mt-4">
+  <div class="card-body">
+    <h3>Resultados DNN</h3>
+    <h5><span id="benigno_dnn"><strong>{{benigno_dnn}}</strong></span> registros: benignos</h5>
+    <h5><span id="DDoS_dnn"><strong>{{DDoS_dnn}}</strong></span> registros: DDoS</h5>
+    <h5><span id="DoSGoldenEye_dnn"><strong>{{DoSGoldenEye_dnn}}</strong></span> registros: DoSGoldenEye</h5>
+    <h5><span id="DoSHulk_dnn"><strong>{{DoSHulk_dnn}}</strong></span> registros: DoSHulk</h5>
+    <h5><span id="DoSSlowhttptest_dnn"><strong>{{DoSSlowhttptest_dnn}}</strong></span> registros: DoSSlowhttptest</h5>
+    <h5><span id="DoSSslowloris_dnn"><strong>{{DoSSslowloris_dnn}}</strong></span> registros: DoSSslowloris</h5>
+  </div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+<script src="../static/grafica.js"></script>
+<body onload="charts()">
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-sm">
+      <div id="barra_cnn"></div>
+    </div>
+    <div class="col-sm">
+      <div id="pie_cnn"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <div id="barra_dnn"></div>
+    </div>
+    <div class="col-sm">
+      <div id="pie_dnn"></div>
+    </div>
+  </div>
+</div>
+</body>
+
+{% endblock %}
