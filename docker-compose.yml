@@ -1,0 +1,70 @@
+services:
+  # UI React + Nginx (proxy /api → gateway). Abre http://localhost:8080
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - gateway
+
+  ml-service:
+    build:
+      context: .
+      dockerfile: services/ml_service/Dockerfile
+    environment:
+      PORT: "8001"
+      MODEL_BASE_DIR: /models
+      CNN_MODEL_PATH: /models/cnn.h5
+      DNN_MODEL_PATH: /models/redneuronal4.h5
+    volumes:
+      - ./models:/models:ro
+    ports:
+      - "8001:8001"
+
+  capture-service:
+    build:
+      context: .
+      dockerfile: services/capture_service/Dockerfile
+    environment:
+      PORT: "8002"
+      WORKSPACE_ROOT: /data/workspace
+      CAPTURES_DIR: /data/captures
+    volumes:
+      - workspace_data:/data/workspace
+      - ./captures:/data/captures
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    ports:
+      - "8002:8002"
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: services/notification_service/Dockerfile
+    environment:
+      PORT: "8003"
+    ports:
+      - "8003:8003"
+
+  gateway:
+    build:
+      context: .
+      dockerfile: services/gateway/Dockerfile
+    environment:
+      PORT: "8000"
+      ML_SERVICE_URL: http://ml-service:8001
+      CAPTURE_SERVICE_URL: http://capture-service:8002
+      NOTIFICATION_SERVICE_URL: http://notification-service:8003
+      CORS_ORIGINS: "*"
+    depends_on:
+      - ml-service
+      - capture-service
+      - notification-service
+    ports:
+      - "8000:8000"
+
+volumes:
+  workspace_data:
