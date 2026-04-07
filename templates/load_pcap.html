@@ -1,16 +1,18 @@
-{% extends 'masterpage.html' %}  
-{% block contenido %} 
-    <h6 class="mt-4"><b>Paso 2: </b></h6>
-    <h6>{{mensaje}}</h6>
-    <div class="w-50 p-3 container text-center" >
+{% extends 'masterpage.html' %}
+{% block contenido %}
+<p class="step-label"><span class="step-num">Paso 2</span> PCAP a CSV</p>
+{% if mensaje %}
+<p class="text-center flash-inline mb-0">{{ mensaje }}</p>
+{% endif %}
+<div class="page-card">
     <form action="/convert_to_csv" method="POST" enctype="multipart/form-data">
-        <label for="archivo">Seleccione el archivo .PCAP</label>
-        <br>
-        <input class="form-control" type="file" name="pcap" id="archivo" required accept=".pcap, .PCAP">
-        <br>
-        <button type="submit" value="Upload" class="btn btn-success"> Cargar archivo</button>
+        <div class="mb-3">
+            <label for="archivo" class="form-label">Archivo .PCAP</label>
+            <input class="form-control" type="file" name="pcap" id="archivo" required accept=".pcap, .PCAP">
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary" value="Upload">Cargar archivo</button>
+        </div>
     </form>
-    </div>
-    
-
-    {% endblock %}
+</div>
+{% endblock %}

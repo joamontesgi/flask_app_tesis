@@ -1,19 +1,16 @@
-{% extends 'masterpage.html' %}  
-{% block contenido %}  
-<br>
-<h2 class="text-center">Prototipo para Detección de Ataques de DDoS (Denegación de Servicios Distribuida) Basado en Aprendizaje de Máquina en una Arquitectura Orientada a Servicios en la Nube</h2>
-<h5 class="mt-4">Convocatoria conjunta Universidad Nacional de Colombia - Universidad de Caldas</h5>
-<div class="containter text-center">
-    <div class="container">
-        <div class="row">
-          <div class="col">
-            <img src="static/unal.png" alt="" style="width: 80px; height: 100px;">
-          </div>
-          <div class="col">
-            <img src="static/uCaldas.png" alt="" style="width: 100px; height: 100px;">
-          </div>
+{% extends 'masterpage.html' %}
+{% block contenido %}
+<section class="hero-block text-center">
+    <h1 class="hero-title mb-3">Prototipo para Detección de Ataques de DDoS (Denegación de Servicios Distribuida) Basado en Aprendizaje de Máquina en una Arquitectura Orientada a Servicios en la Nube</h1>
+    <p class="hero-subtitle mb-4">Convocatoria conjunta Universidad Nacional de Colombia - Universidad de Caldas</p>
+    <div class="row justify-content-center align-items-center g-4 logo-row mb-4">
+        <div class="col-auto">
+            <img src="{{ url_for('static', filename='unal.png') }}" alt="Universidad Nacional de Colombia" width="80" height="100">
         </div>
-      </div>
-      <p>Este prototipo se desarrolla con el objetivo de identifi</p>
-</div>
+        <div class="col-auto">
+            <img src="{{ url_for('static', filename='uCaldas.png') }}" alt="Universidad de Caldas" width="100" height="100">
+        </div>
+    </div>
+    <p class="hero-lead mb-0">Este prototipo se desarrolla con el objetivo de identifi</p>
+</section>
 {% endblock %}

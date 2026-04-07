@@ -1,4 +1,4 @@
-function charts(){    
+function charts(){
 
     // ---- CNN ----
     let benigno_cnn = parseInt(document.querySelector("#benigno_cnn").innerText);
@@ -27,3 +27,9 @@ function charts(){
     Plotly.newPlot('barra_dnn', [{x: etiquetas, y: ataques_dnn, type: 'bar'}], {title:"DNN - Barras"});
     Plotly.newPlot('pie_dnn', [{values: ataques_dnn, labels: etiquetas, type: 'pie'}], {title:"DNN - Pie"});
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.getElementById('barra_cnn') && typeof charts === 'function') {
+        charts();
+    }
+});

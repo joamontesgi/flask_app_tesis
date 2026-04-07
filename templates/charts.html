@@ -1,56 +1,133 @@
 {% extends 'masterpage.html' %}
-{% block contenido %} 
+{% block main_modifiers %} app-main--wide{% endblock %}
+{% block contenido %}
 
-<h1 class="mt-4">Dashboard</h1>
+{% if block_report %}
+<div class="model-card card mb-4 border-warning">
+    <div class="card-body">
+        <h3 class="h5 mb-2">Análisis y posibles medidas (LangChain)</h3>
+        <p class="small text-muted mb-2">{{ block_report.message }}</p>
+        {% if malicious_ips %}
+        <p class="small mb-2"><strong>IPs de interés (CNN y/o DNN, flujos no benignos; sin bloqueo aplicado):</strong>
+            {% for ip in malicious_ips %}<code class="ms-1">{{ ip }}</code>{% if not loop.last %},{% endif %}{% endfor %}
+        </p>
+        {% endif %}
+        {% if block_report.actions %}
+        <ul class="list-unstyled mb-0 small">
+            {% for a in block_report.actions %}
+            <li class="mb-1"><code>{{ a.ip }}</code> — {{ a.result }} <span class="text-muted">({{ a.mode }})</span></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if block_report.llm_narrative %}
+        <div class="mt-3 small">
+            <h4 class="h6">Informe del LLM</h4>
+            <div class="llm-narrative border rounded p-3 bg-dark bg-opacity-25" style="white-space: pre-wrap;">{{ block_report.llm_narrative }}</div>
+        </div>
+        {% endif %}
+        {% if block_report.pdf_static_path %}
+        <p class="mt-3 mb-0">
+            <a class="btn btn-sm btn-outline-warning" href="{{ url_for('static', filename=block_report.pdf_static_path) }}" download>Descargar informe PDF</a>
+        </p>
+        {% endif %}
+        <p class="small text-muted mb-0 mt-2">Informe asistido con LangChain + OpenAI (<code>OPENAI_API_KEY</code>, <code>OPENAI_CHAT_MODEL</code> opcional). <strong>No se bloquea tráfico</strong> desde esta aplicación; el texto del LLM puede sugerir, entre otras opciones, valorar el bloqueo de las IPs en el perímetro si el operador lo decide.</p>
+    </div>
+</div>
+{% endif %}
 
-<!-- Resultados CNN -->
-<div class="card mt-4">
-  <div class="card-body">
-    <h3>Resultados CNN</h3>
-    <h5><span id="benigno_cnn"><strong>{{benigno_cnn}}</strong></span> registros: benignos</h5>
-    <h5><span id="DDoS_cnn"><strong>{{DDoS_cnn}}</strong></span> registros: DDoS</h5>
-    <h5><span id="DoSGoldenEye_cnn"><strong>{{DoSGoldenEye_cnn}}</strong></span> registros: DoSGoldenEye</h5>
-    <h5><span id="DoSHulk_cnn"><strong>{{DoSHulk_cnn}}</strong></span> registros: DoSHulk</h5>
-    <h5><span id="DoSSlowhttptest_cnn"><strong>{{DoSSlowhttptest_cnn}}</strong></span> registros: DoSSlowhttptest</h5>
-    <h5><span id="DoSSslowloris_cnn"><strong>{{DoSSslowloris_cnn}}</strong></span> registros: DoSSslowloris</h5>
-  </div>
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mb-4">
+    <h1 class="dashboard-title mt-2 mb-0">Dashboard</h1>
+    <button type="button" class="btn btn-outline-light align-self-stretch align-self-md-auto" id="btnDescargarPdf">
+        Descargar PDF
+    </button>
 </div>
 
-<!-- Resultados DNN -->
-<div class="card mt-4">
-  <div class="card-body">
-    <h3>Resultados DNN</h3>
-    <h5><span id="benigno_dnn"><strong>{{benigno_dnn}}</strong></span> registros: benignos</h5>
-    <h5><span id="DDoS_dnn"><strong>{{DDoS_dnn}}</strong></span> registros: DDoS</h5>
-    <h5><span id="DoSGoldenEye_dnn"><strong>{{DoSGoldenEye_dnn}}</strong></span> registros: DoSGoldenEye</h5>
-    <h5><span id="DoSHulk_dnn"><strong>{{DoSHulk_dnn}}</strong></span> registros: DoSHulk</h5>
-    <h5><span id="DoSSlowhttptest_dnn"><strong>{{DoSSlowhttptest_dnn}}</strong></span> registros: DoSSlowhttptest</h5>
-    <h5><span id="DoSSslowloris_dnn"><strong>{{DoSSslowloris_dnn}}</strong></span> registros: DoSSslowloris</h5>
-  </div>
+<div class="model-card card mb-4">
+    <div class="card-body">
+        <h3 class="h5 mb-0">Resultados CNN</h3>
+        <div class="mt-3">
+            <div class="stat-row">
+                <span class="stat-label">Benignos</span>
+                <span class="stat-value" id="benigno_cnn">{{ benigno_cnn }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">DDoS</span>
+                <span class="stat-value" id="DDoS_cnn">{{ DDoS_cnn }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">DoSGoldenEye</span>
+                <span class="stat-value" id="DoSGoldenEye_cnn">{{ DoSGoldenEye_cnn }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">DoSHulk</span>
+                <span class="stat-value" id="DoSHulk_cnn">{{ DoSHulk_cnn }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">DoSSlowhttptest</span>
+                <span class="stat-value" id="DoSSlowhttptest_cnn">{{ DoSSlowhttptest_cnn }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">DoSSslowloris</span>
+                <span class="stat-value" id="DoSSslowloris_cnn">{{ DoSSslowloris_cnn }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="model-card card mb-4">
+    <div class="card-body">
+        <h3 class="h5 mb-0">Resultados DNN</h3>
+        <div class="mt-3">
+            <div class="stat-row">
+                <span class="stat-label">Benignos</span>
+                <span class="stat-value" id="benigno_dnn">{{ benigno_dnn }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">DDoS</span>
+                <span class="stat-value" id="DDoS_dnn">{{ DDoS_dnn }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">DoSGoldenEye</span>
+                <span class="stat-value" id="DoSGoldenEye_dnn">{{ DoSGoldenEye_dnn }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">DoSHulk</span>
+                <span class="stat-value" id="DoSHulk_dnn">{{ DoSHulk_dnn }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">DoSSlowhttptest</span>
+                <span class="stat-value" id="DoSSlowhttptest_dnn">{{ DoSSlowhttptest_dnn }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">DoSSslowloris</span>
+                <span class="stat-value" id="DoSSslowloris_dnn">{{ DoSSslowloris_dnn }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="charts-section container-fluid px-0 mb-5">
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div id="barra_cnn"></div>
+        </div>
+        <div class="col-lg-6">
+            <div id="pie_cnn"></div>
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div id="barra_dnn"></div>
+        </div>
+        <div class="col-lg-6">
+            <div id="pie_dnn"></div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
-<script src="../static/grafica.js"></script>
-<body onload="charts()">
-
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-sm">
-      <div id="barra_cnn"></div>
-    </div>
-    <div class="col-sm">
-      <div id="pie_cnn"></div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm">
-      <div id="barra_dnn"></div>
-    </div>
-    <div class="col-sm">
-      <div id="pie_dnn"></div>
-    </div>
-  </div>
-</div>
-</body>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="{{ url_for('static', filename='grafica.js') }}"></script>
+<script src="{{ url_for('static', filename='pdfExport.js') }}"></script>
 
 {% endblock %}

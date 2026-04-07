@@ -11,11 +11,12 @@ def dnn(csv_file):
     # Load pre-trained DNN model
     new_model = keras.models.load_model('models/redneuronal4.h5')
     
-    # Read CSV dataset
-    df = pd.read_csv(csv_file)
-    
+    # Read CSV dataset (conservar src_ip para correlación con predicciones)
+    df_orig = pd.read_csv(csv_file)
+    src_ip = df_orig['src_ip'] if 'src_ip' in df_orig.columns else None
+
     # Reorder dataset columns to match training order
-    df = df.reindex(columns=[
+    df = df_orig.reindex(columns=[
         'dst_port','flow_duration','tot_fwd_pkts','tot_bwd_pkts','totlen_fwd_pkts','totlen_bwd_pkts',
         'fwd_pkt_len_max','fwd_pkt_len_min','fwd_pkt_len_mean','fwd_pkt_len_std','bwd_pkt_len_max',
         'bwd_pkt_len_min','bwd_pkt_len_mean','bwd_pkt_len_std','flow_byts_s','flow_pkts_s','flow_iat_mean',
@@ -56,5 +57,12 @@ def dnn(csv_file):
     hulk = int(results_df[results_df['Label'] == 'DoS Hulk'].count())
     slowhttptest = int(results_df[results_df['Label'] == 'DoS Slowhttptest'].count())
     slowloris = int(results_df[results_df['Label'] == 'DoS slowloris'].count())
-    
-    return benign, ddos, goldeneye, hulk, slowhttptest, slowloris
+
+    malicious_ips = []
+    if src_ip is not None:
+        mask = results_df['Label'].values != 'BENIGN'
+        malicious_ips = sorted(
+            {str(x) for x in src_ip.values[mask] if str(x).strip() != ''}
+        )
+
+    return benign, ddos, goldeneye, hulk, slowhttptest, slowloris, malicious_ips

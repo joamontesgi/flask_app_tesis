@@ -1,33 +1,31 @@
-{% extends 'masterpage.html' %}  
-{% block contenido %} 
-        <h6 class="mt-4"><b>Paso 1: </b></h6>
-        <div class="w-50 p-3 container text-center" >
-        <form action="/real_time" method="post" class="mt-4" enctype="multipart/form-data">
-            <br>
-            <h6>¿Desea iniciar bajo el enfoque automático?</h6>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="demon" id="demonSi" value="1" required onchange="cambio()">
-                <label class="form-check-label" for="demonSi">
-                    Sí
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="demon" id="demonNo" value="0" required onchange="cambio()">
-                <label class="form-check-label" for="demonNo">
-                  No
-                </label>
-                <div id="elementos">
-                </div>
-              </div>
-                <select name="iface" id="select" class="form-control" class="text-center" required>
-                    <option value="" selected disabled hidden>Seleccione una interfaz de red</option>
-                    {% for data in iface_names %}
-                    <option value="{{ data }}">{{ data }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <script src="../static/manualAuto.js"></script>
-            <button type="submit" class="btn btn-success" id="normalizar">Iniciar captura</button>
-        </form>
- 
-        {% endblock %}
+{% extends 'masterpage.html' %}
+{% block contenido %}
+<p class="step-label"><span class="step-num">Paso 1</span> Captura en tiempo real</p>
+<div class="page-card">
+    <form action="/real_time" method="post" class="mt-2" enctype="multipart/form-data">
+        <h6 class="mb-3 fw-semibold">¿Desea iniciar bajo el enfoque automático?</h6>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="demon" id="demonSi" value="1" required onchange="cambio()">
+            <label class="form-check-label" for="demonSi">Sí</label>
+        </div>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="radio" name="demon" id="demonNo" value="0" required onchange="cambio()">
+            <label class="form-check-label" for="demonNo">No</label>
+        </div>
+        <div id="elementos" class="mb-3"></div>
+        <div class="mb-4">
+            <label for="select" class="form-label">Interfaz de red</label>
+            <select name="iface" id="select" class="form-select" required>
+                <option value="" selected disabled hidden>Seleccione una interfaz de red</option>
+                {% for data in iface_names %}
+                <option value="{{ data }}">{{ data }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <script src="{{ url_for('static', filename='manualAuto.js') }}"></script>
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg" id="normalizar">Iniciar captura</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
