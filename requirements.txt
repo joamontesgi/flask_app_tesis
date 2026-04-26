@@ -74,7 +74,7 @@ scikit-learn==1.0.2
 scipy==1.10.1
 setuptools==47.1.0
 six==1.16.0
-sklearn==0.0.post1
+scikit-learn==1.0.2
 soupsieve==2.3.2.post1
 tensorboard==2.11.0
 tensorboard-data-server==0.6.1
