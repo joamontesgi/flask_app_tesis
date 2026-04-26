@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
@@ -18,6 +19,8 @@ from files import find_csv, find_pcap
 from langchain_block import run_langchain_blocking
 
 app = Flask(__name__)
+CORS(app)
+LAST_MODEL_RESULT = None
 
 
 def _prediction_summary_cnn_dnn(
@@ -44,6 +47,11 @@ def _prediction_summary_cnn_dnn(
         f"Hulk={DoSHulk_dnn}, Slowhttptest={DoSSlowhttptest_dnn}, slowloris={DoSSslowloris_dnn}"
     )
     return f"{cnn}. {dnn}."
+
+
+def _store_latest_model_result(payload):
+    global LAST_MODEL_RESULT
+    LAST_MODEL_RESULT = payload
 
 
 @app.route('/models', methods=['POST'])
@@ -79,6 +87,29 @@ def models():
                 "actions": [],
                 "message": f"LangChain/bloqueo: {exc!s}",
             }
+    payload = {
+        "timestamp": datetime.now().isoformat(),
+        "source": "upload_csv",
+        "cnn": {
+            "benigno": benigno_cnn,
+            "DDoS": DDoS_cnn,
+            "DoSGoldenEye": DoSGoldenEye_cnn,
+            "DoSHulk": DoSHulk_cnn,
+            "DoSSlowhttptest": DoSSlowhttptest_cnn,
+            "DoSSslowloris": DoSSslowloris_cnn,
+        },
+        "dnn": {
+            "benigno": benigno_dnn,
+            "DDoS": DDoS_dnn,
+            "DoSGoldenEye": DoSGoldenEye_dnn,
+            "DoSHulk": DoSHulk_dnn,
+            "DoSSlowhttptest": DoSSlowhttptest_dnn,
+            "DoSSslowloris": DoSSslowloris_dnn,
+        },
+        "malicious_ips": malicious_ips,
+        "block_report": block_report,
+    }
+    _store_latest_model_result(payload)
     return render_template(
         'charts.html',
         benigno_cnn=benigno_cnn,
@@ -96,6 +127,18 @@ def models():
         malicious_ips=malicious_ips,
         block_report=block_report,
     )
+
+
+@app.route('/api/latest-model-result', methods=['GET'])
+def latest_model_result():
+    if LAST_MODEL_RESULT is None:
+        return jsonify(
+            {
+                "message": "Aún no hay resultados. Ejecuta primero /models.",
+                "result": None,
+            }
+        ), 404
+    return jsonify(LAST_MODEL_RESULT), 200
 
 @app.route('/')
 def template():
@@ -194,6 +237,29 @@ def algoritmo():
                 os.system('mv ' + csv + ' captures')
                 hora_fin = datetime.now()
                 tiempo = hora_fin - hora_inicio
+                payload = {
+                    "timestamp": datetime.now().isoformat(),
+                    "source": "real_time",
+                    "cnn": {
+                        "benigno": benigno,
+                        "DDoS": DDoS,
+                        "DoSGoldenEye": DoSGoldenEye,
+                        "DoSHulk": DoSHulk,
+                        "DoSSlowhttptest": DoSSlowhttptest,
+                        "DoSSslowloris": DoSSslowloris,
+                    },
+                    "dnn": {
+                        "benigno": benigno_dn,
+                        "DDoS": DDoS_dn,
+                        "DoSGoldenEye": DoSGoldenEye_dn,
+                        "DoSHulk": DoSHulk_dn,
+                        "DoSSlowhttptest": DoSSlowhttptest_dn,
+                        "DoSSslowloris": DoSSslowloris_dn,
+                    },
+                    "malicious_ips": malicious_ips,
+                    "block_report": block_report,
+                }
+                _store_latest_model_result(payload)
                 return render_template(
                     'charts.html',
                     fecha=fecha,
