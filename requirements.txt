@@ -20,6 +20,10 @@ google-auth-oauthlib==1.2.0
 google-pasta==0.2.0
 grpcio==1.62.1
 h5py==3.10.0
+
+# 🔥 CLAVE: compatible con OpenAI
+httpx==0.27.2
+
 httplib2==0.22.0
 idna==3.7
 importlib-metadata==6.11.0
@@ -40,14 +44,18 @@ numpy==1.23.5
 oauthlib==3.2.2
 opt-einsum==3.3.0
 
-# 🔥 CLAVE (compatibilidad moderna)
-packaging>=23.2
+# 🔥 CLAVE: compatible con LangChain
+packaging>=23.2,<25
+
 typing-extensions>=4.12.2
 
 pandas==1.5.3
 pdfkit==1.0.0
 Pillow==10.3.0
-protobuf==3.20.3
+
+# 🔥 CRÍTICO: compatible con TensorFlow 2.11
+protobuf==3.19.6
+
 py==1.11.0
 pyasn1==0.6.0
 pyasn1-modules==0.4.0
@@ -102,7 +110,7 @@ wikipedia==1.4.0
 wrapt==1.14.1
 zipp==3.17.0
 
-# 🚀 AI moderno compatible
+# 🔥 LLM STACK CORRECTO
 langchain-core==0.2.43
 langchain-openai==0.1.7
 openai==1.30.1

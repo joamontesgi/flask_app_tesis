@@ -1,9 +1,3 @@
-"""
-Integración LangChain + OpenAI ChatGPT (API moderna).
-- No se ejecuta bloqueo en firewall ni se modifica el sistema: solo análisis asistido.
-- El LLM describe el contexto del modelo ML y sugiere posibles acciones.
-"""
-
 from __future__ import annotations
 
 import os
@@ -14,28 +8,8 @@ def _openai_chat_model_name() -> str:
     return (
         os.environ.get("OPENAI_CHAT_MODEL")
         or os.environ.get("LANGCHAIN_BLOCK_MODEL")
-        or "gpt-4o-mini"
+        or "gpt-4o"
     )
-
-
-def _extract_text_from_response(out) -> str:
-    """Soporta múltiples formatos de salida."""
-    if not out:
-        return ""
-
-    content = getattr(out, "content", "")
-
-    if isinstance(content, str):
-        return content.strip()
-
-    if isinstance(content, list):
-        texts = []
-        for block in content:
-            if isinstance(block, dict) and block.get("type") == "text":
-                texts.append(block.get("text", ""))
-        return "\n".join(texts).strip()
-
-    return ""
 
 
 def _generate_advisory_report(
@@ -43,89 +17,100 @@ def _generate_advisory_report(
     summary: str,
     malicious_ips: list[str],
 ) -> str:
-    """Genera informe con LLM (robusto y compatible)."""
-
-    from langchain_core.messages import HumanMessage, SystemMessage
-    from langchain_openai import ChatOpenAI
-    from openai import OpenAI
-
-    # ✅ Cliente moderno (evita bug de proxies)
-    client = OpenAI()
-
-    llm = ChatOpenAI(
-        model=model,
-        temperature=0.2,
-        max_tokens=800,
-        client=client,  # 🔥 FIX CLAVE
-    )
-
-    msgs = [
-        SystemMessage(
-            content=(
-                "Eres un analista de ciberseguridad. Respondes en español, claro y profesional. "
-                "No ejecutas acciones reales, solo das recomendaciones."
-            )
-        ),
-        HumanMessage(
-            content=(
-                f"Resultados ML: {summary}\n\n"
-                f"IPs sospechosas: {malicious_ips}\n\n"
-                "Genera un informe de 3 a 5 párrafos que incluya:\n"
-                "1. Evaluación del tráfico\n"
-                "2. Riesgos\n"
-                "3. Recomendación sobre bloqueo (sin ejecutarlo)\n"
-                "4. Otras medidas\n\n"
-                "Responde SIEMPRE con texto."
-            )
-        ),
-    ]
+    """Genera informe usando OpenAI directamente (más fiable que LangChain)."""
 
     try:
-        out = llm.invoke(msgs)
+        from openai import OpenAI
 
-        print("LLM RAW:", out)  # debug
+        api_key = os.environ.get("OPENAI_API_KEY")
 
-        text = _extract_text_from_response(out)
+        if not api_key:
+            return "❌ OPENAI_API_KEY no configurada"
 
-        if not text:
-            return "No se pudo generar narrativa (respuesta vacía)."
+        client = OpenAI(api_key=api_key)
 
-        return text
+        print("🔑 API KEY detectada:", api_key[:10], "...")
+        print("🤖 Modelo usado:", model)
+
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "Eres un analista de ciberseguridad. Respondes en español, claro y profesional. "
+                        "Esta aplicación no bloquea tráfico ni ejecuta comandos en firewall."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        f"Resultados de los modelos ML (CNN y DNN): {summary}\n\n"
+                        f"IPs sospechosas: {malicious_ips}\n\n"
+                        "Redacta un informe de 3 a 5 párrafos que incluya:\n"
+                        "1. Interpretación del tráfico\n"
+                        "2. Evaluación del riesgo\n"
+                        "3. Posible recomendación de bloqueo (sin ejecutarlo)\n"
+                        "4. Otras medidas de seguridad\n\n"
+                        "IMPORTANTE: No afirmes que se ejecutó ningún bloqueo."
+                    ),
+                },
+            ],
+        )
+
+        print("🔎 RESPUESTA RAW:", response)
+
+        content = response.choices[0].message.content
+
+        if not content:
+            return "⚠️ El modelo respondió vacío."
+
+        return content.strip()
 
     except Exception as e:
-        print("ERROR LLM:", str(e))
-        return f"Error generando narrativa: {str(e)}"
+        print("❌ ERROR REAL DEL LLM:", e)
+        return f"❌ Error real del LLM ({model}): {str(e)}"
 
 
 def run_langchain_blocking(
     malicious_ips: list[str],
     prediction_summary: str | None = None,
 ) -> dict[str, Any]:
-    """Pipeline principal (sin acciones reales en red)."""
+    """
+    Genera recomendaciones con el LLM.
+    ❗ No bloquea IPs ni ejecuta acciones reales.
+    """
+
+    print("🚀 Ejecutando análisis LLM...")
 
     if not malicious_ips:
         return {
             "mode": "skipped",
             "actions": [],
-            "message": "No hay IPs sospechosas.",
+            "message": "No hay IPs asociadas a tráfico sospechoso.",
+            "llm_narrative": "No se generó informe porque no hay IPs sospechosas.",
         }
 
-    if not (os.environ.get("OPENAI_API_KEY") or "").strip():
+    api_key = os.environ.get("OPENAI_API_KEY")
+
+    if not api_key or not api_key.strip():
         return {
             "mode": "missing_api_key",
             "actions": [],
-            "message": "Falta OPENAI_API_KEY.",
+            "message": "Configura OPENAI_API_KEY.",
+            "llm_narrative": "❌ Falta OPENAI_API_KEY",
         }
 
     summary = prediction_summary or ""
     model = _openai_chat_model_name()
 
+    print("📊 Summary:", summary)
+    print("🌐 IPs:", malicious_ips)
+
     actions = [
         {
             "ip": ip,
-            "result": (
-                "Posible contramedida: evaluar bloqueo en firewall o contención manual."
-            ),
+            "result": "Posible contramedida (no aplicada): evaluar bloqueo en firewall/ACL.",
             "mode": "recomendación",
         }
         for ip in malicious_ips
@@ -135,19 +120,23 @@ def run_langchain_blocking(
         "mode": "recomendacion",
         "model": model,
         "actions": actions,
-        "message": "Sistema sin bloqueo automático (solo recomendación).",
+        "message": "No hay bloqueo automático. Solo recomendaciones.",
         "llm_narrative": "",
         "pdf_static_path": None,
     }
 
-    try:
-        narrative = _generate_advisory_report(model, summary, malicious_ips)
-        result["llm_narrative"] = narrative
-    except Exception as e:
-        result["llm_narrative"] = f"Error: {str(e)}"
+    # 🔥 Generación REAL (sin silencios)
+    result["llm_narrative"] = _generate_advisory_report(
+        model, summary, malicious_ips
+    )
 
+    print("\n🧠 NARRATIVA GENERADA:\n")
+    print(result["llm_narrative"])
+    print("\n" + "=" * 60)
+
+    # 📄 PDF opcional
     try:
-        if result.get("llm_narrative"):
+        if result["llm_narrative"] and not result["llm_narrative"].startswith("❌"):
             from block_report_pdf import build_block_report_pdf
 
             result["pdf_static_path"] = build_block_report_pdf(
@@ -157,7 +146,10 @@ def run_langchain_blocking(
                 actions,
                 model,
             )
+
+            print("📄 PDF generado:", result["pdf_static_path"])
+
     except Exception as e:
-        print("ERROR PDF:", str(e))
+        print("⚠️ ERROR generando PDF:", e)
 
     return result
